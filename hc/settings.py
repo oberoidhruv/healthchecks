@@ -10,11 +10,12 @@ import os
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
-
+from dotenv import load_dotenv
 import django_stubs_ext
 
 django_stubs_ext.monkeypatch()
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 
 
 def envbool(s: str, default: str) -> bool:
@@ -33,11 +34,15 @@ def envint(s: str, default: str) -> int | None:
     return int(v)
 
 
+if os.getenv('DB'):
+    print("DATABASE DEFINED")
+
 SECRET_KEY = os.getenv("SECRET_KEY", "---")
 METRICS_KEY = os.getenv("METRICS_KEY")
 DEBUG = envbool("DEBUG", "True")
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "healthchecks@example.org")
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL", "healthchecks@example.org")
 SUPPORT_EMAIL = os.getenv("SUPPORT_EMAIL")
 USE_PAYMENTS = envbool("USE_PAYMENTS", "False")
 REGISTRATION_OPEN = envbool("REGISTRATION_OPEN", "True")
@@ -183,11 +188,11 @@ if os.getenv("DB") == "mysql":
     }
 
 USE_TZ = True
-TIME_ZONE = "UTC"
+TIME_ZONE = "Australia/Melbourne"
 USE_I18N = False
 
 SITE_ROOT = os.getenv("SITE_ROOT", "http://localhost:8000")
-SITE_NAME = os.getenv("SITE_NAME", "Mychecks")
+SITE_NAME = os.getenv("SITE_NAME", "HealthChecks")
 SITE_LOGO_URL = os.getenv("SITE_LOGO_URL")
 MASTER_BADGE_LABEL = os.getenv("MASTER_BADGE_LABEL", SITE_NAME)
 PING_ENDPOINT = os.getenv("PING_ENDPOINT", SITE_ROOT + "/ping/")
@@ -293,8 +298,10 @@ PROMETHEUS_ENABLED = envbool("PROMETHEUS_ENABLED", "True")
 # Pushover integration
 PUSHOVER_API_TOKEN = os.getenv("PUSHOVER_API_TOKEN")
 PUSHOVER_SUBSCRIPTION_URL = os.getenv("PUSHOVER_SUBSCRIPTION_URL")
-PUSHOVER_EMERGENCY_RETRY_DELAY = int(os.getenv("PUSHOVER_EMERGENCY_RETRY_DELAY", "300"))
-PUSHOVER_EMERGENCY_EXPIRATION = int(os.getenv("PUSHOVER_EMERGENCY_EXPIRATION", "86400"))
+PUSHOVER_EMERGENCY_RETRY_DELAY = int(
+    os.getenv("PUSHOVER_EMERGENCY_RETRY_DELAY", "300"))
+PUSHOVER_EMERGENCY_EXPIRATION = int(
+    os.getenv("PUSHOVER_EMERGENCY_EXPIRATION", "86400"))
 
 # Pushbullet integration
 PUSHBULLET_CLIENT_ID = os.getenv("PUSHBULLET_CLIENT_ID")
@@ -338,7 +345,8 @@ VICTOROPS_ENABLED = envbool("VICTOROPS_ENABLED", "True")
 
 # Webhooks
 WEBHOOKS_ENABLED = envbool("WEBHOOKS_ENABLED", "True")
-INTEGRATIONS_ALLOW_PRIVATE_IPS = envbool("INTEGRATIONS_ALLOW_PRIVATE_IPS", "False")
+INTEGRATIONS_ALLOW_PRIVATE_IPS = envbool(
+    "INTEGRATIONS_ALLOW_PRIVATE_IPS", "False")
 
 # Zulip
 ZULIP_ENABLED = envbool("ZULIP_ENABLED", "True")
