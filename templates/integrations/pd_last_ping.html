@@ -1,0 +1,6 @@
+{% load humanize %}
+{% if ping %}
+    {{ ping.created|naturaltime }}
+{% else %}
+    Never
+{% endif %}
